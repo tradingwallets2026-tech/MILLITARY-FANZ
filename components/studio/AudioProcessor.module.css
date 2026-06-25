@@ -1,0 +1,25 @@
+.root {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 14px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 999px;
+}
+
+.waveform { display: flex; align-items: center; gap: 3px; height: 20px; }
+.bar {
+  width: 3px; border-radius: 2px;
+  background: var(--accent-cyan);
+  animation: wave 0.5s ease-in-out infinite alternate;
+  transform-origin: bottom;
+}
+@keyframes wave {
+  from { height: 4px; opacity: 0.5; }
+  to   { height: 18px; opacity: 1; }
+}
+
+.stats {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);
+}
+.div { color: var(--border-subtle); }

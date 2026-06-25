@@ -1,0 +1,23 @@
+.page { padding: 32px; max-width: 1200px; display: flex; flex-direction: column; gap: 28px; }
+.header { }
+.title { font-family: var(--font-heading); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; color: var(--text-primary); }
+.sub { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; font-family: var(--font-mono); }
+
+.statsRow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.statLabel { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px; }
+.statVal { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; }
+
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 60px; gap: 12px; color: var(--text-muted); }
+
+.table { width: 100%; border-collapse: collapse; }
+.table th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--text-muted); text-align: left;
+  padding: 10px 14px; border-bottom: 1px solid var(--border-subtle);
+}
+.table td { font-size: 0.88rem; color: var(--text-secondary); padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.table tr:hover td { background: rgba(255,255,255,0.02); }
+.dateCell { font-family: var(--font-mono); font-size: 0.78rem; }
+
+@media (max-width: 1024px) { .statsRow { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px)  { .statsRow { grid-template-columns: repeat(2, 1fr); } }

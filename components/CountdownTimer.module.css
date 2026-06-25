@@ -1,0 +1,94 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+.orb {
+  position: absolute;
+  width: 700px; height: 700px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.box {
+  background: linear-gradient(145deg, rgba(124,58,237,0.08), rgba(0,212,255,0.05));
+  border: 1px solid var(--border-purple);
+  border-radius: 24px;
+  padding: clamp(40px, 6vw, 80px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-glow-purple);
+  margin: 0 auto;
+  max-width: 900px;
+}
+.box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grid-bg,
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(124,58,237,0.04) 60px),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(124,58,237,0.04) 60px)
+  );
+  pointer-events: none;
+}
+
+.topBadge { margin-bottom: 20px; }
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--text-primary);
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.timer {
+  display: flex;
+  gap: clamp(16px, 4vw, 48px);
+  justify-content: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.unit { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+.digits {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  line-height: 1;
+  background: linear-gradient(180deg, #fff 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: clamp(60px, 10vw, 100px);
+  text-align: center;
+  position: relative;
+}
+.digits::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--border-glow);
+}
+
+.unitLabel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.sub {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.cta { font-size: 1rem; padding: 14px 36px; }

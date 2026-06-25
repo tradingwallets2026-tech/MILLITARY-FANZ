@@ -1,0 +1,27 @@
+.root {
+  background: rgba(0,255,136,0.04);
+  border: 1px solid rgba(0,255,136,0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.68rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent-green);
+}
+.liveDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse-green 1.5s ease-in-out infinite;
+}
+.preview {
+  width: 100%; border-radius: 8px;
+  background: #000; aspect-ratio: 16/9;
+}
+.hint {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: var(--text-muted); text-align: center;
+}

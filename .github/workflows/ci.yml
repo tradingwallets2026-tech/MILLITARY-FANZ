@@ -1,0 +1,63 @@
+name: 🔍 CI — Lint & Type Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: military-pass/package-lock.json
+
+      - name: 📦 Install dependencies
+        working-directory: military-pass
+        run: npm ci
+
+      - name: 🔍 ESLint
+        working-directory: military-pass
+        run: npm run lint
+
+      - name: 🏷️ TypeScript type check
+        working-directory: military-pass
+        run: npx tsc --noEmit
+
+      - name: 🏗️ Build check
+        working-directory: military-pass
+        env:
+          NEXT_PUBLIC_SUPABASE_URL:       ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY:  ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_APP_URL:            https://militarypass.com
+          NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY }}
+        run: npm run build
+
+  security-audit:
+    name: 🔐 Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: military-pass/package-lock.json
+      - run: npm ci
+        working-directory: military-pass
+      - name: Audit dependencies
+        working-directory: military-pass
+        run: npm audit --audit-level=high
+        continue-on-error: true

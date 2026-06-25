@@ -1,0 +1,48 @@
+# Military Pass — Worker Dependencies
+# =====================================
+# Install locally for dev/testing:
+#   pip install -r workers/requirements.txt
+#
+# Modal installs these inside the container image at deploy time.
+# Do NOT run pip install manually for production — Modal handles it.
+
+# ── Core ──────────────────────────────────────────────────────────
+modal>=0.62.0
+numpy==1.26.3
+Pillow==10.2.0
+
+# ── Face Swap Stack ───────────────────────────────────────────────
+insightface==0.7.3
+onnxruntime-gpu==1.16.3           # GPU ONNX runtime (CUDA)
+opencv-python-headless==4.8.1.78  # No GUI needed in container
+
+# ── Face Enhancement (GFPGAN + CodeFormer) ────────────────────────
+gfpgan==1.3.8
+facexlib==0.3.0
+basicsr==1.4.2
+torch==2.1.2
+torchvision==0.16.2
+
+# ── Face Mesh (MediaPipe — skin tone mask) ────────────────────────
+mediapipe==0.10.9
+
+# ── Skin Tone Alignment ───────────────────────────────────────────
+scikit-image==0.22.0              # histogram matching
+scipy==1.12.0                     # interpolation
+
+# ── Voice Transformation (WORLD vocoder) ──────────────────────────
+pyworld==0.3.4
+librosa==0.10.1
+soundfile==0.12.1
+praat-parselmouth==0.4.3
+
+# ── Voice Training (RVC — HuBERT + FAISS) ────────────────────────
+transformers==4.37.2              # HuBERT base model
+torchaudio==2.1.2                 # audio resampling
+faiss-gpu==1.7.4                  # GPU-accelerated vector index
+einops==0.7.0                     # tensor ops
+huggingface-hub==0.20.3           # model downloads
+
+# ── System-level (installed via apt in Modal image) ───────────────
+# libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender-dev
+# libsndfile1 ffmpeg sox cmake libopenblas-dev

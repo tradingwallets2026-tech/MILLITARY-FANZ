@@ -1,0 +1,88 @@
+.page { padding: 32px; max-width: 1200px; display: flex; flex-direction: column; gap: 28px; }
+
+.header { }
+.title { font-family: var(--font-heading); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; color: var(--text-primary); }
+.sub { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; font-family: var(--font-mono); }
+
+/* Balance Row */
+.balanceRow { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+
+.balanceCard { display: flex; flex-direction: column; gap: 8px; }
+.balanceLabel { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+.balanceNum {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff, var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.balanceSub { font-size: 0.9rem; color: var(--text-secondary); }
+.balanceStats { display: flex; gap: 24px; margin-top: 12px; border-top: 1px solid var(--border-subtle); padding-top: 16px; }
+.stat { display: flex; flex-direction: column; gap: 3px; }
+.statVal { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); }
+.statKey { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+
+/* Transactions */
+.txCard { display: flex; flex-direction: column; }
+.txTitle { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 16px; }
+.txEmpty { color: var(--text-muted); font-size: 0.88rem; }
+.txList { display: flex; flex-direction: column; gap: 8px; }
+.txRow { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); }
+.txIcon { font-size: 1.1rem; flex-shrink: 0; }
+.txInfo { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.txDesc { font-size: 0.85rem; color: var(--text-secondary); }
+.txDate { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); }
+.txAmount { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; }
+
+/* Plans */
+.plansHeader { }
+.plansTitle { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: var(--text-primary); }
+.plansSub { color: var(--text-muted); font-size: 0.88rem; margin-top: 4px; }
+
+.plansGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.planCard {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.planCard:hover { border-color: var(--border-glow); transform: translateY(-4px); }
+.planPopular { border-color: var(--border-purple) !important; box-shadow: var(--shadow-glow-purple); transform: translateY(-6px) scale(1.02); }
+.popularBadge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--gradient-button); color: #fff;
+  font-family: var(--font-mono); font-size: 0.6rem; padding: 3px 10px;
+  border-radius: 999px; white-space: nowrap;
+}
+.planIcon { font-size: 1.6rem; margin-bottom: 10px; }
+.planName { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary); margin-bottom: 12px; }
+.planCredits { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 700; color: var(--accent-cyan); line-height: 1; }
+.planUnit { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px; }
+.planPrice { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
+.planMinutes { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; }
+
+/* History */
+.historyCard { }
+.historyTable { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.historyTable th {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-muted); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border-subtle);
+}
+.historyTable td {
+  font-size: 0.88rem; color: var(--text-secondary); padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.historyTable tr:hover td { background: rgba(255,255,255,0.02); }
+
+@media (max-width: 1200px) { .plansGrid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  { .plansGrid { grid-template-columns: repeat(2, 1fr); } .balanceRow { grid-template-columns: 1fr; } }
+@media (max-width: 480px)  { .plansGrid { grid-template-columns: 1fr; } }

@@ -1,0 +1,228 @@
+/* ═══════════════════════════════════════════════
+   Military Pass — Operator Studio Layout
+   Full-viewport dark studio with top bar,
+   feed area + sidebar, and modal overlay
+   ═══════════════════════════════════════════════ */
+
+/* Root — full viewport, no scroll */
+.studioRoot {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Top bar ─────────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 52px;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  backdrop-filter: blur(12px);
+  z-index: 50;
+}
+
+.topLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.backBtn {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: var(--text-secondary); }
+
+.studioTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.titleIcon { font-size: 1rem; }
+
+.livePill {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-green);
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 999px;
+  padding: 2px 10px;
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* ─── Main layout ────────────────────────────── */
+.mainLayout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ─── Feed area (left) ───────────────────────── */
+.feedArea {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}
+
+/* ─── Sidebar (right) ───────────────────────── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-left: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+}
+
+.controlsWrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Error banner ───────────────────────────── */
+.errorBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #f87171;
+}
+
+.errorClose {
+  background: none;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+/* ─── Credits Exhausted Modal ────────────────── */
+.exhaustedModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeInUp 0.25s ease;
+}
+
+.exhaustedCard {
+  background: var(--gradient-card);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 0 60px rgba(239, 68, 68, 0.15);
+}
+
+.exhaustedTitle {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.exhaustedSub {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.exhaustedActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.exhaustedActions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ─── Responsive ────────────────────────────── */
+@media (max-width: 1024px) {
+  .mainLayout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+  .sidebar {
+    border-left: none;
+    border-top: 1px solid var(--border-subtle);
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 320px;
+  }
+  .controlsWrap { flex: 1; min-width: 280px; }
+}
+
+/* Quality indicator */
+.qualityIndicator {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.65rem;
+}
+.qualityDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+.qualityDot[data-quality="fast"]     { background: var(--accent-green); }
+.qualityDot[data-quality="balanced"] { background: var(--accent-cyan); }
+.qualityDot[data-quality="ultra"]    { background: #c084fc; }
+.qualityLabel { color: var(--text-muted); letter-spacing: 0.1em; }
+@keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+@media (max-width: 640px) {
+  .topBar { padding: 0 12px; }
+  .feedArea { padding: 10px; }
+  .sidebar  { padding: 10px; }
+  .qualityIndicator { display: none; }
+}
+

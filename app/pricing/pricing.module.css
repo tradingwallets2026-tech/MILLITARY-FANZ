@@ -1,0 +1,137 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: 60px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.backLink {
+  align-self: flex-start;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--text-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.backLink:hover { color: var(--accent-cyan); }
+
+.badge {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  padding: 4px 14px; border-radius: 999px;
+  background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
+  color: var(--accent-cyan); letter-spacing: 0.06em;
+}
+
+.title {
+  font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800; color: var(--text-primary);
+  background: var(--gradient-text); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.sub { font-size: 1rem; color: var(--text-muted); max-width: 480px; line-height: 1.6; }
+
+.currentBalance {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(0,255,136,0.06);
+  border: 1px solid rgba(0,255,136,0.2);
+  border-radius: 999px; padding: 8px 20px;
+}
+.balanceLabel { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+.balanceNum   { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--accent-green); }
+
+.successBanner {
+  max-width: 700px; margin: 0 auto 32px;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.3);
+  border-radius: 12px; padding: 14px 20px;
+  font-size: 0.95rem; color: var(--text-primary);
+  text-align: center;
+}
+.studioLink { color: var(--accent-cyan); text-decoration: none; font-weight: 600; }
+
+/* Plans grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  background: var(--gradient-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 28px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+  transition: all 0.25s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-glow);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.popular {
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 0 30px rgba(0,212,255,0.12);
+}
+
+.popularBadge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--gradient-button); color: #000;
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+}
+
+.cardHeader { display: flex; align-items: center; gap: 10px; }
+.planIcon   { font-size: 1.6rem; }
+.planName   { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+
+.priceRow   { display: flex; align-items: flex-start; gap: 2px; }
+.currency   { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-muted); margin-top: 4px; }
+.amount     { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.decimal    { font-size: 1.2rem; font-weight: 600; }
+
+.creditsRow { display: flex; align-items: baseline; gap: 4px; }
+.creditsNum { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan); }
+.creditsLabel { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+
+.features   { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.features li { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--text-secondary); }
+.check      { color: var(--accent-green); font-weight: 700; flex-shrink: 0; }
+
+.cardCTA    { margin-top: auto; }
+.signupBtn, .popularBtn { width: 100%; justify-content: center; }
+.popularBtn { background: var(--gradient-button); color: #000 !important; }
+
+.rateNote {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+  margin-top: 40px;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);
+}
+.rateDivider { color: var(--border-subtle); }
+
+/* Stripe USD button — secondary style */
+.stripeBtn {
+  width: 100%; justify-content: center;
+  margin-top: 8px;
+  background: rgba(99,91,255,0.1);
+  border: 1px solid rgba(99,91,255,0.35);
+  color: #a78bfa;
+  font-size: 0.8rem; padding: 10px;
+  border-radius: 10px; cursor: pointer;
+  transition: all 0.2s; font-family: var(--font-mono);
+  display: flex; align-items: center; gap: 6px;
+}
+.stripeBtn:hover { background: rgba(99,91,255,0.2); border-color: rgba(99,91,255,0.6); }
+
+@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
