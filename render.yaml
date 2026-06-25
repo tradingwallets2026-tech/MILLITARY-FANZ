@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: military-pass
+    env: node
+    plan: starter
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://military-pass.onrender.com # Change this if using a custom domain
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: MODAL_AUTH_TOKEN
+        sync: false
+      - key: MODAL_FACE_SWAP_URL
+        sync: false
+      - key: MODAL_VOICE_URL
+        sync: false
+      - key: MODAL_VOICE_TRAIN_URL
+        sync: false

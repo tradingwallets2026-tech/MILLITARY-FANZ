@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
 
   // Supabase puts the token in the URL hash; the client SDK picks it up
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event) => {
+    supabase.auth.onAuthStateChange((event: string) => {
       if (event === "PASSWORD_RECOVERY") setTokenOk(true);
     });
   }, [supabase]);

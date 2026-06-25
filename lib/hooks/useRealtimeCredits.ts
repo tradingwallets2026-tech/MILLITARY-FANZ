@@ -65,7 +65,7 @@ export function useRealtimeCredits(
           table:  "credits",
           filter: `user_id=eq.${userId}`,
         },
-        (payload) => {
+        (payload: any) => {
           const row = payload.new as CreditBalance;
           if (row) {
             setCredits({

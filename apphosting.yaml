@@ -1,0 +1,35 @@
+# Firebase App Hosting Configuration
+# Reference: https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  minInstances: 0
+  maxInstances: 10
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: NEXT_PUBLIC_SUPABASE_URL
+    secret: NEXT_PUBLIC_SUPABASE_URL
+  - variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+    secret: NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - variable: SUPABASE_SERVICE_ROLE_KEY
+    secret: SUPABASE_SERVICE_ROLE_KEY
+  - variable: NEXT_PUBLIC_APP_URL
+    value: https://military-pass.web.app # Update with your Firebase hosting URL
+  - variable: PAYSTACK_SECRET_KEY
+    secret: PAYSTACK_SECRET_KEY
+  - variable: NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY
+    secret: NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY
+  - variable: STRIPE_SECRET_KEY
+    secret: STRIPE_SECRET_KEY
+  - variable: STRIPE_WEBHOOK_SECRET
+    secret: STRIPE_WEBHOOK_SECRET
+  - variable: MODAL_AUTH_TOKEN
+    secret: MODAL_AUTH_TOKEN
+  - variable: MODAL_FACE_SWAP_URL
+    secret: MODAL_FACE_SWAP_URL
+  - variable: MODAL_VOICE_URL
+    secret: MODAL_VOICE_URL
+  - variable: MODAL_VOICE_TRAIN_URL
+    secret: MODAL_VOICE_TRAIN_URL
