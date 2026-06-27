@@ -38,7 +38,7 @@ voice_image = (
     modal.Image.debian_slim(python_version="3.11")
     .apt_install([
         "libsndfile1", "ffmpeg", "libffi-dev", "sox", "git",
-        "libopenblas-dev", "build-essential",
+        "libopenblas-dev", "build-essential", "wget", "curl",
     ])
     .pip_install([
         "numpy==1.26.3",
@@ -48,7 +48,7 @@ voice_image = (
         "pyworld==0.3.4",
         "torch==2.1.2",
         "torchaudio==2.1.2",
-        "faiss-gpu==1.7.4",
+        "faiss-cpu",
         "transformers==4.37.2",   # HuBERT
         "praat-parselmouth==0.4.3",
         "Pillow==10.2.0",
@@ -101,7 +101,7 @@ PRESETS: dict[str, dict] = {
     image=voice_image,
     volumes={"/models": model_volume},
     timeout=30,
-    container_idle_timeout=120,
+    scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
 class VoiceTransformer:
@@ -476,10 +476,10 @@ class VoiceTrainer:
     image=voice_image,
     volumes={"/models": model_volume},
     timeout=30,
-    container_idle_timeout=120,
+    scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
-@modal.web_endpoint(method="POST", label="voice-api")
+@modal.fastapi_endpoint(method="POST", label="voice-api")
 def voice_api(body: dict) -> dict:
     """Real-time voice transform REST endpoint."""
     auth = os.environ.get("MODAL_AUTH_TOKEN", "")
@@ -501,7 +501,7 @@ def voice_api(body: dict) -> dict:
     timeout=1800,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
-@modal.web_endpoint(method="POST", label="voice-train-api")
+@modal.fastapi_endpoint(method="POST", label="voice-train-api")
 def voice_train_api(body: dict) -> dict:
     """Async voice model training endpoint."""
     auth = os.environ.get("MODAL_AUTH_TOKEN", "")

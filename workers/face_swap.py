@@ -37,14 +37,16 @@ face_image = (
         "libxrender-dev", "wget", "git", "cmake", "libopenblas-dev",
     ])
     .pip_install([
+        "torch==2.1.2",
+        "torchvision==0.16.2",
+    ])
+    .pip_install([
         "insightface==0.7.3",
         "onnxruntime-gpu==1.16.3",
         "opencv-python-headless==4.8.1.78",
         "gfpgan==1.3.8",
         "facexlib==0.3.0",
         "basicsr==1.4.2",
-        "torch==2.1.2",
-        "torchvision==0.16.2",
         "mediapipe==0.10.9",
         "scikit-image==0.22.0",
         "Pillow==10.2.0",
@@ -55,10 +57,10 @@ face_image = (
         # InsightFace buffalo_l detection + landmark models
         "python -c \"import insightface; from insightface.app import FaceAnalysis; "
         "fa = FaceAnalysis(name='buffalo_l', providers=['CUDAExecutionProvider']); fa.prepare(ctx_id=0)\"",
-        # Download inswapper_128.onnx
+        # Download inswapper_128.onnx from public Gourieff/ReActor repository
         "mkdir -p /root/.insightface/models && "
         "wget -q -O /root/.insightface/models/inswapper_128.onnx "
-        "'https://huggingface.co/deepinsight/inswapper/resolve/main/inswapper_128.onnx'",
+        "'https://huggingface.co/Gourieff/ReActor/resolve/main/models/inswapper_128.onnx'",
         # Download GFPGAN v1.4
         "mkdir -p /root/gfpgan_weights && "
         "wget -q -O /root/gfpgan_weights/GFPGANv1.4.pth "
@@ -84,7 +86,7 @@ QualityMode = Literal["fast", "balanced", "ultra"]
     image=face_image,
     volumes={"/models": model_volume},
     timeout=60,
-    container_idle_timeout=120,
+    scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
 class FaceSwapWorker:
@@ -431,10 +433,10 @@ class FaceSwapWorker:
     gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     volumes={"/models": model_volume},
     timeout=60,
-    container_idle_timeout=120,
+    scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
-@modal.web_endpoint(method="POST", label="face-swap-api")
+@modal.fastapi_endpoint(method="POST", label="face-swap-api")
 def face_swap_api(body: dict) -> dict:
     """Main REST endpoint — called by Next.js /api/ai/face-swap."""
     auth_token = os.environ.get("MODAL_AUTH_TOKEN", "")
