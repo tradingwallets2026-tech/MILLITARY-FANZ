@@ -61,7 +61,14 @@ export default function FAQSection() {
               </a>
               <button
                 onClick={() => {
-                  throw new Error("Sentry Test Error from Military Pass Landing Page");
+                  // Intentionally call an undefined function to trigger an uncaught ReferenceError
+                  // for testing Sentry integration in production.
+                  try {
+                    // @ts-ignore
+                    myUndefinedFunction();
+                  } catch (err) {
+                    throw err;
+                  }
                 }}
                 className="btn btn-ghost"
                 style={{ marginTop: "12px", border: "1px dashed var(--accent-red)", color: "var(--accent-red)" }}
