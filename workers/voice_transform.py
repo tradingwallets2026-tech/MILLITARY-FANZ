@@ -53,6 +53,7 @@ voice_image = (
         "praat-parselmouth==0.4.3",
         "Pillow==10.2.0",
         "huggingface-hub==0.20.3",
+        "fastapi[standard]",
     ])
     .run_commands(
         # Download HuBERT base checkpoint
