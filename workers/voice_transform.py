@@ -97,7 +97,7 @@ PRESETS: dict[str, dict] = {
 # REAL-TIME VOICE TRANSFORMER (inference worker)
 # ═══════════════════════════════════════════════════════════════════
 @app.cls(
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=voice_image,
     volumes={"/models": model_volume},
     timeout=30,
@@ -313,7 +313,7 @@ class VoiceTransformer:
 # PERSONAL VOICE TRAINER (async training job)
 # ═══════════════════════════════════════════════════════════════════
 @app.cls(
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=training_image,
     volumes={"/models": model_volume},
     timeout=1800,  # 30 minutes max
@@ -472,7 +472,7 @@ class VoiceTrainer:
 
 # ── HTTP endpoints ─────────────────────────────────────────────────
 @app.function(
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=voice_image,
     volumes={"/models": model_volume},
     timeout=30,
@@ -495,7 +495,7 @@ def voice_api(body: dict) -> dict:
 
 
 @app.function(
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=training_image,
     volumes={"/models": model_volume},
     timeout=1800,

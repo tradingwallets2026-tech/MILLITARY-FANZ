@@ -80,7 +80,7 @@ QualityMode = Literal["fast", "balanced", "ultra"]
 # FACE SWAP CLASS
 # ═══════════════════════════════════════════════════════════════════
 @app.cls(
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=face_image,
     volumes={"/models": model_volume},
     timeout=60,
@@ -428,7 +428,7 @@ class FaceSwapWorker:
 # ─── HTTP Endpoint ────────────────────────────────────────────────
 @app.function(
     image=face_image,
-    gpu=modal.gpu.A10G(),
+    gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     volumes={"/models": model_volume},
     timeout=60,
     container_idle_timeout=120,

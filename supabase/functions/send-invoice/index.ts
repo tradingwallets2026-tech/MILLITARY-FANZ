@@ -75,6 +75,16 @@ serve(async (req: Request) => {
       });
     }
 
+    // Fetch email from Supabase Auth admin API using the Service Role Key
+    const { data: authUser, error: authErr } = await supabase.auth.admin.getUserById(userId);
+    if (authErr || !authUser?.user?.email) {
+      console.error("[send-invoice] Failed to get user email:", authErr);
+      return new Response(JSON.stringify({ error: "User email not found in auth.users" }), {
+        status: 404, headers: { "Content-Type": "application/json" },
+      });
+    }
+    const userEmail = authUser.user.email;
+
     const emailRes = await fetch("https://api.resend.com/emails", {
       method:  "POST",
       headers: {
@@ -83,7 +93,7 @@ serve(async (req: Request) => {
       },
       body: JSON.stringify({
         from:    FROM_EMAIL,
-        to:      [userId], // Supabase Auth email via userId
+        to:      [userEmail], // Send to actual user email address resolved via Auth Admin API
         subject: `🎖️ Military Pass Invoice — ${payment.plan_name} Plan`,
         html:    invoiceHtml,
       }),

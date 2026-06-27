@@ -1,12 +1,22 @@
+/**
+ * @fileoverview Next.js webpack and server configuration.
+ * Integrates security headers, standalone output builds, and wraps the
+ * entire configuration with Sentry Next.js SDK for server/client error logging.
+ *
+ * @see https://nextjs.org/docs/app/api-reference/next-config-js
+ */
+
+const { withSentryConfig } = require("@sentry/nextjs");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ── Performance ──────────────────────────────────────────
+  // ── Performance & Standalone Build ───────────────────────
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
   output: "standalone",
 
-  // ── Image optimization ────────────────────────────────────
+  // ── Image optimization remote schemas ─────────────────────
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
@@ -16,27 +26,7 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
-  // ── PostHog reverse proxy ─────────────────────────────────
-  async rewrites() {
-    return [
-      {
-        source: "/ingest/static/:path*",
-        destination: "https://us-assets.i.posthog.com/static/:path*",
-      },
-      {
-        source: "/ingest/array/:path*",
-        destination: "https://us-assets.i.posthog.com/array/:path*",
-      },
-      {
-        source: "/ingest/:path*",
-        destination: "https://us.i.posthog.com/:path*",
-      },
-    ];
-  },
-
-  skipTrailingSlashRedirect: true,
-
-  // ── Security headers ─────────────────────────────────────
+  // ── HTTP Security headers ─────────────────────────────────
   async headers() {
     return [
       {
@@ -54,10 +44,27 @@ const nextConfig = {
     ];
   },
 
-  // ── Experimental ─────────────────────────────────────────
+  // ── Experimental next features ───────────────────────────
   experimental: {
     serverActions: { bodySizeLimit: "6mb" },
   },
 };
 
-module.exports = nextConfig;
+// Wrap Next.js config with Sentry error monitoring integration
+module.exports = withSentryConfig(
+  nextConfig,
+  {
+    // Webpack plugin options: suppress logs and specify org/project context
+    silent: true,
+    org: "military-fanz",
+    project: "javascript-nextjs",
+  },
+  {
+    // SDK options: enable client source maps and tunnel routes
+    widenClientFileUpload: true,
+    transpileClientSDK: true,
+    tunnelRoute: "/monitoring",
+    hideSourceMaps: true,
+    disableLogger: true,
+  }
+);

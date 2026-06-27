@@ -59,6 +59,15 @@ export default function FAQSection() {
               <a href="mailto:support@militarypass.com" className="btn btn-ghost" style={{ marginTop: "12px" }}>
                 📧 Contact Support
               </a>
+              <button
+                onClick={() => {
+                  throw new Error("Sentry Test Error from Military Pass Landing Page");
+                }}
+                className="btn btn-ghost"
+                style={{ marginTop: "12px", border: "1px dashed var(--accent-red)", color: "var(--accent-red)" }}
+              >
+                🚨 Test Sentry Integration
+              </button>
             </div>
           </div>
 
