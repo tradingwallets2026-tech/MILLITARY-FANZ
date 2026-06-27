@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUser, getUserCredits } from "@/lib/actions";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const FACE_SWAP_API  = process.env.MODAL_FACE_SWAP_URL ?? "";
 const MODAL_TOKEN    = process.env.MODAL_AUTH_TOKEN    ?? "";
@@ -169,6 +170,18 @@ export async function POST(request: NextRequest) {
       if (dbError) {
         return NextResponse.json({ error: dbError.message }, { status: 500 });
       }
+
+      const posthog = getPostHogClient();
+      posthog.capture({
+        distinctId: user.id,
+        event: "avatar_uploaded",
+        properties: {
+          avatar_name:    name,
+          enhanced:       !!FACE_SWAP_API,
+          embedding_dims: embedding.length,
+          file_size_mb:   parseFloat((file.size / 1024 / 1024).toFixed(2)),
+        },
+      });
 
       return NextResponse.json({
         success:         true,

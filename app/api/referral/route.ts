@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/actions";
 import { createClient } from "@/lib/supabase/server";
 import crypto from "crypto";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 const REFERRAL_BONUS_INVITER = 50;  // credits given to the person who referred
@@ -116,6 +117,18 @@ export async function POST(request: NextRequest) {
       total_credits_earned: supabase.rpc("credits_earned_inc",  { p_user_id: refRow.user_id, p_amount: REFERRAL_BONUS_INVITER }),
     })
     .eq("user_id", refRow.user_id);
+
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId: user.id,
+    event: "referral_claimed",
+    properties: {
+      referral_code:       referralCode.toUpperCase(),
+      invitee_credits:     REFERRAL_BONUS_INVITEE,
+      inviter_credits:     REFERRAL_BONUS_INVITER,
+      inviter_id:          refRow.user_id,
+    },
+  });
 
   return NextResponse.json({
     success:       true,

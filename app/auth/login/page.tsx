@@ -2,6 +2,7 @@
 import { useState, useTransition } from "react";
 import { signIn } from "@/lib/actions";
 import Link from "next/link";
+import posthog from "posthog-js";
 import styles from "./auth.module.css";
 
 export default function LoginPage() {
@@ -11,9 +12,16 @@ export default function LoginPage() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const email = fd.get("email") as string;
     startTransition(async () => {
       const result = await signIn(fd);
-      if (result?.error) setError(result.error);
+      if (result?.error) {
+        setError(result.error);
+        posthog.capture("login_failed", { error: result.error });
+      } else {
+        posthog.identify(email, { email });
+        posthog.capture("user_logged_in", { method: "email" });
+      }
     });
   }
 

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "./PaystackButton.module.css";
+import posthog from "posthog-js";
 
 declare global {
   interface Window {
@@ -78,6 +79,14 @@ export default function PaystackButton({
     }
 
     setLoading(true);
+    posthog.capture("plan_selected", {
+      plan_id:        planId,
+      plan_name:      plan.name,
+      credits:        plan.credits,
+      amount_ngn:     plan.amountNGN,
+      payment_method: "paystack",
+      user_id:        userId,
+    });
 
     // Generate reference on server (ensures metadata is signed)
     let ref = `MP-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;

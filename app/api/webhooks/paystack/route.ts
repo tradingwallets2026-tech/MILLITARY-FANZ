@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,6 +33,18 @@ export async function POST(request: NextRequest) {
       if (!userId || !credits) {
         return NextResponse.json({ error: "Missing metadata" }, { status: 400 });
       }
+
+      const posthog = getPostHogClient();
+      posthog.capture({
+        distinctId: userId,
+        event: "credit_purchase_completed",
+        properties: {
+          plan_name:      planName,
+          credits:        credits,
+          payment_method: "paystack",
+          paystack_ref:   reference,
+        },
+      });
 
       try {
         const { createClient } = await import("@/lib/supabase/server");

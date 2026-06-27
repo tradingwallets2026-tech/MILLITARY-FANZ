@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getUser } from "@/lib/actions";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const PLANS: Record<string, { name: string; credits: number; priceUSD: number }> = {
   recruit:    { name: "Recruit",    credits: 300,   priceUSD: 999   },
@@ -60,6 +61,20 @@ export async function POST(request: Request) {
       },
       success_url: `${appUrl}/dashboard/credits?stripe=success&credits=${plan.credits}`,
       cancel_url:  `${appUrl}/pricing?stripe=cancelled`,
+    });
+
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: user.id,
+      event: "credit_purchase_initiated",
+      properties: {
+        plan_id:        planId,
+        plan_name:      plan.name,
+        credits:        plan.credits,
+        price_usd:      plan.priceUSD / 100,
+        payment_method: "stripe",
+        session_id:     session.id,
+      },
     });
 
     return NextResponse.json({ url: session.url, sessionId: session.id });

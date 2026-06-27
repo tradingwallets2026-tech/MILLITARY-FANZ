@@ -1,5 +1,6 @@
 "use client";
 import { useState, useCallback, useRef } from "react";
+import posthog from "posthog-js";
 import CameraFeed              from "@/components/studio/CameraFeed";
 import AudioProcessorComponent from "@/components/studio/AudioProcessorComponent";
 import StudioControls          from "@/components/studio/StudioControls";
@@ -71,7 +72,15 @@ export default function StudioClient({ avatars, initialBalance, userId }: Studio
     sessionStartRef.current = Date.now();
     setIsRunning(true);
     setIsPaused(false);
-  }, [selectedAvatar, voiceModelId]);
+    posthog.capture("studio_session_started", {
+      avatar_id:   selectedAvatar.id,
+      avatar_name: selectedAvatar.name,
+      voice_preset: selectedVoice,
+      resolution,
+      quality,
+      user_id: userId,
+    });
+  }, [selectedAvatar, voiceModelId, selectedVoice, resolution, quality, userId]);
 
   const handlePause = useCallback(() => {
     setIsPaused((p) => !p);
@@ -98,14 +107,26 @@ export default function StudioClient({ avatars, initialBalance, userId }: Studio
           },
         }),
       }).catch(() => {});
+
+      posthog.capture("studio_session_ended", {
+        duration_seconds:  duration,
+        credits_used:      creditsUsed,
+        frames_processed:  frameCountRef.current,
+        avg_latency_ms:    frameStats?.avgLatencyMs ?? 0,
+        resolution,
+        quality,
+        user_id: userId,
+      });
+
       setSessionId(null);
     }
-  }, [sessionId, creditsLeft, initialBalance, frameStats]);
+  }, [sessionId, creditsLeft, initialBalance, frameStats, resolution, quality, userId]);
 
   const handleExhausted = useCallback(() => {
     setCreditsExhausted(true);
     setIsRunning(false);
-  }, []);
+    posthog.capture("credits_exhausted", { user_id: userId });
+  }, [userId]);
 
   const handleError = useCallback((err: string) => {
     if (err === "NO_CREDITS") {
@@ -119,6 +140,13 @@ export default function StudioClient({ avatars, initialBalance, userId }: Studio
     setFrameStats(stats);
     frameCountRef.current = stats.frameCount;
   }, []);
+
+  const handleAvatarSelect = useCallback((avatar: Avatar | null) => {
+    setSelectedAvatar(avatar);
+    if (avatar) {
+      posthog.capture("avatar_selected", { avatar_id: avatar.id, avatar_name: avatar.name, user_id: userId });
+    }
+  }, [userId]);
 
   const isProcessing = isRunning && !isPaused && !!selectedAvatar?.embedding;
 
@@ -208,7 +236,7 @@ export default function StudioClient({ avatars, initialBalance, userId }: Studio
               isRunning={isRunning}
               isPaused={isPaused}
               creditsExhausted={creditsExhausted}
-              onAvatarSelect={setSelectedAvatar}
+              onAvatarSelect={handleAvatarSelect}
               onVoiceSelect={setSelectedVoice}
               onVoiceModelSelect={setVoiceModelId}
               onResolutionChange={setResolution}

@@ -1,45 +1,13 @@
 /**
  * Military Pass — PostHog Analytics
  * ====================================
- * Provides useAnalytics() hook for tracking key events.
- *
- * Setup:
- *   npm install posthog-js
- *   Add to .env.local:
- *     NEXT_PUBLIC_POSTHOG_KEY=phc_xxxx
- *     NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
+ * Thin wrappers around posthog-js for consistent event tracking.
+ * PostHog is initialized via instrumentation-client.ts (Next.js 15.3+).
  */
 
+import posthog from "posthog-js";
+
 type EventProperties = Record<string, string | number | boolean | null>;
-
-// Lazy-load posthog to avoid SSR issues — type declared here to avoid hard dep
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let _ph: any | null = null;
-
-async function getPostHog() {
-  if (typeof window === "undefined") return null;
-  if (_ph) return _ph;
-
-  const key  = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://app.posthog.com";
-
-  if (!key) return null;
-
-  try {
-    const { default: posthog } = await import("posthog-js");
-    posthog.init(key, {
-      api_host:              host,
-      capture_pageview:      false, // Manually track with Next.js router
-      capture_pageleave:     true,
-      session_recording:     { maskAllInputs: true },
-      autocapture:           false,  // Manual events only
-    });
-    _ph = posthog;
-    return posthog;
-  } catch {
-    return null;
-  }
-}
 
 // Named events for consistency across the app
 export const Events = {
@@ -67,24 +35,19 @@ export const Events = {
   CAMERA_DENIED:        "camera_permission_denied",
 } as const;
 
-export async function track(event: string, properties?: EventProperties) {
-  const ph = await getPostHog();
-  ph?.capture(event, properties);
+export function track(event: string, properties?: EventProperties) {
+  if (typeof window === "undefined") return;
+  posthog.capture(event, properties);
 }
 
-export async function identify(userId: string, traits?: EventProperties) {
-  const ph = await getPostHog();
-  ph?.identify(userId, traits);
+export function identify(userId: string, traits?: EventProperties) {
+  if (typeof window === "undefined") return;
+  posthog.identify(userId, traits);
 }
 
-export async function pageview(path: string) {
-  const ph = await getPostHog();
-  ph?.capture("$pageview", { $current_url: path });
-}
-
-export async function reset() {
-  const ph = await getPostHog();
-  ph?.reset();
+export function reset() {
+  if (typeof window === "undefined") return;
+  posthog.reset();
 }
 
 /** React hook for analytics — convenience wrapper */
@@ -92,7 +55,6 @@ export function useAnalytics() {
   return {
     track,
     identify,
-    pageview,
     reset,
     Events,
   };

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(request: NextRequest) {
   const stripeKey    = process.env.STRIPE_SECRET_KEY    ?? "";
@@ -65,6 +66,20 @@ export async function POST(request: NextRequest) {
         credits_granted: credits,
         currency:        "usd",
         status:          "success",
+      });
+
+      const posthog = getPostHogClient();
+      posthog.capture({
+        distinctId: userId,
+        event: "credit_purchase_completed",
+        properties: {
+          plan_id:        planId,
+          plan_name:      planName,
+          credits:        credits,
+          amount_usd:     (amountUSD / 100).toFixed(2),
+          payment_method: "stripe",
+          stripe_session: stripeRef,
+        },
       });
 
       console.log(`[stripe/webhook] ✅ +${credits} credits for user ${userId} (${planName})`);

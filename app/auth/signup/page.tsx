@@ -2,6 +2,7 @@
 import { useState, useTransition } from "react";
 import { signUp } from "@/lib/actions";
 import Link from "next/link";
+import posthog from "posthog-js";
 import styles from "../login/auth.module.css";
 
 export default function SignupPage() {
@@ -15,9 +16,16 @@ export default function SignupPage() {
       setError("Passwords do not match.");
       return;
     }
+    const email    = fd.get("email")    as string;
+    const username = fd.get("username") as string;
     startTransition(async () => {
       const result = await signUp(fd);
-      if (result?.error) setError(result.error);
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        posthog.identify(email, { email, username });
+        posthog.capture("user_signed_up", { method: "email", username });
+      }
     });
   }
 
