@@ -59,10 +59,11 @@ face_image = (
         # InsightFace buffalo_l detection + landmark models
         "python -c \"import insightface; from insightface.app import FaceAnalysis; "
         "fa = FaceAnalysis(name='buffalo_l', providers=['CUDAExecutionProvider']); fa.prepare(ctx_id=0)\"",
-        # Download inswapper_128.onnx from public Gourieff/ReActor repository using huggingface_hub
+        # Download inswapper_128.onnx from public Patil/inswapper repository OR Gourieff/ReActor repository (using huggingface_hub)   "path = hf_hub_download(repo_id='Gourieff/ReActor', filename='models/inswapper_128.onnx'); "
         "python -c \"from huggingface_hub import hf_hub_download; import shutil; import os; "
         "os.makedirs('/root/.insightface/models', exist_ok=True); "
-        "path = hf_hub_download(repo_id='Gourieff/ReActor', filename='models/inswapper_128.onnx'); "
+        # Use this one if the first one fails: "path = hf_hub_download(repo_id='Gourieff/ReActor', filename='models/inswapper_128.onnx'); "
+        "path = hf_hub_download(repo_id='Patil/inswapper', filename='inswapper_128.onnx'); "
         "shutil.copy(path, '/root/.insightface/models/inswapper_128.onnx')\"",
         # Download GFPGAN v1.4
         "mkdir -p /root/gfpgan_weights && "
