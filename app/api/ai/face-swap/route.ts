@@ -5,7 +5,7 @@ import { getUser, getUserCredits } from "@/lib/actions";
 const FACE_SWAP_API   = process.env.MODAL_FACE_SWAP_URL ?? "";
 const MODAL_TOKEN     = process.env.MODAL_AUTH_TOKEN    ?? "";
 const MAX_FRAME_BYTES = 512 * 1024;   // 512KB max per frame
-const TIMEOUT_MS      = 12_000;       // 12s timeout (ultra quality needs more)
+const TIMEOUT_MS      = 60_000;       // 60s timeout (for cold starts)
 
 export type QualityMode = "fast" | "balanced" | "ultra";
 

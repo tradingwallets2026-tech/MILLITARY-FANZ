@@ -89,7 +89,7 @@ QualityMode = Literal["fast", "balanced", "ultra"]
     gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     image=face_image,
     volumes={"/models": model_volume},
-    timeout=60,
+    timeout=300,
     scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )
@@ -436,7 +436,7 @@ class FaceSwapWorker:
     image=face_image,
     gpu="A10G", # Modern Modal SDK requires string representation of GPU resources
     volumes={"/models": model_volume},
-    timeout=60,
+    timeout=300,
     scaledown_window=120,
     secrets=[modal.Secret.from_name("military-pass-secrets")],
 )

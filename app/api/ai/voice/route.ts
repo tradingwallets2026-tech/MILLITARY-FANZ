@@ -4,7 +4,7 @@ import { getUser, getUserCredits } from "@/lib/actions";
 /* ─── Config ──────────────────────────────────────────────── */
 const VOICE_API   = process.env.MODAL_VOICE_URL    ?? "";
 const MODAL_TOKEN = process.env.MODAL_AUTH_TOKEN   ?? "";
-const TIMEOUT_MS  = 5000;
+const TIMEOUT_MS  = 30_000;
 
 const VALID_PRESETS = new Set(["commander", "ghost", "operative", "recon", "ranger"]);
 

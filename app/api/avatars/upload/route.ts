@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
             image_b64:  b64,
             quality:    "ultra",
           }),
-          signal: AbortSignal.timeout(20_000),
+          signal: AbortSignal.timeout(120_000),
         });
         const enhData = await enhanceRes.json();
         if (enhData.result_b64) {
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
           action:     "extract_embedding",
           image_b64:  enhancedB64,
         }),
-        signal: AbortSignal.timeout(15_000),
+        signal: AbortSignal.timeout(120_000),
       });
 
       const embedData = await embedRes.json();
