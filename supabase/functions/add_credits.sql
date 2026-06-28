@@ -153,7 +153,7 @@ $$;
 
 -- ─── 4. Grant execute permissions ───────────────────────────
 GRANT EXECUTE ON FUNCTION public.add_credits     TO service_role;
-GRANT EXECUTE ON FUNCTION public.deduct_credits  TO service_role;
+GRANT EXECUTE ON FUNCTION public.deduct_credits(UUID, INTEGER, UUID, TEXT) TO service_role;
 GRANT EXECUTE ON FUNCTION public.get_user_stats  TO authenticated;
 
 -- ─── 5. Supabase Storage bucket setup ───────────────────────

@@ -272,6 +272,18 @@ CREATE INDEX idx_payments_ref ON public.payments(paystack_ref);
 -- ──────────────────────────────────────────
 -- 12. PRESET VOICES (seed data)
 -- ──────────────────────────────────────────
+-- Insert dummy system user to satisfy foreign key constraint
+INSERT INTO auth.users (id, email, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, aud, role)
+VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'system-presets@militarypass.local',
+  now(),
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{"username":"system_presets"}'::jsonb,
+  'authenticated',
+  'authenticated'
+) ON CONFLICT (id) DO NOTHING;
+
 INSERT INTO public.voice_profiles
   (user_id, name, style, pitch_shift, speed_factor, is_preset, id)
 VALUES
