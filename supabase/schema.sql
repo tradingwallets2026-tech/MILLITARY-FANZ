@@ -293,3 +293,12 @@ VALUES
   ('00000000-0000-0000-0000-000000000000', 'Recon',      'recon-sharp',     2, 1.10, TRUE, uuid_generate_v4()),
   ('00000000-0000-0000-0000-000000000000', 'Ranger',     'ranger-gruff',   -5, 0.85, TRUE, uuid_generate_v4())
 ON CONFLICT DO NOTHING;
+
+-- Seed preset avatars
+INSERT INTO public.avatars (user_id, name, image_url, embedding, is_preset, is_default)
+VALUES
+  ('00000000-0000-0000-0000-000000000000', 'Commander', '', '{}'::jsonb, TRUE, TRUE),
+  ('00000000-0000-0000-0000-000000000000', 'Ghost',      '', '{}'::jsonb, TRUE, FALSE),
+  ('00000000-0000-0000-0000-000000000000', 'Operative',  '', '{}'::jsonb, TRUE, FALSE),
+  ('00000000-0000-0000-0000-000000000000', 'Ranger',     '', '{}'::jsonb, TRUE, FALSE)
+ON CONFLICT DO NOTHING;

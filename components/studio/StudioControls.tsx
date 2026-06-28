@@ -106,7 +106,7 @@ export default function StudioControls({
             {avatars.length === 0 ? (
               <p className={styles.empty}>
                 No avatars yet.{" "}
-                <a href="/dashboard">Upload one →</a>
+                <a href="/dashboard/avatars">Upload one →</a>
               </p>
             ) : (
               avatars.map((av) => (
